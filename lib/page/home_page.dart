@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getx_test/model/models.dart';
 import 'package:getx_test/store/store.dart';
 
 class HomePage extends StatelessWidget {
@@ -55,10 +56,44 @@ class HomePage extends StatelessWidget {
               },
               child: const Text('跳转page2'),
             ),
+            const Text('对象更新', style: TextStyle(fontSize: 20.0, color: Colors.redAccent)),
+            Obx(() => Text(c.basic.value.name ?? '')),
+            Obx(() => Text(c.basic().name ?? '')),
+            Obx(() => Text(c.basic.value.age.toString())),
+            ElevatedButton(
+              onPressed: () {
+                c.updateBasic('张三', 25);
+              },
+              child: const Text('更新数据'),
+            ),
+            const Text('对象列表更新', style: TextStyle(fontSize: 20.0, color: Colors.redAccent)),
+            Obx(
+              () => Column(
+                children: c.basicList.value.map((e) => Text(e.name! + e.age.toString() + '岁')).toList(),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                List<Map<String, dynamic>> list = [
+                  {'name': '张三', 'age': 19},
+                  {'name': '李四', 'age': 21},
+                  {'name': '王五', 'age': 26},
+                ];
+                c.updateBasicList(list);
+              },
+              child: const Text('更新数据'),
+            ),
             Expanded(child: Container()),
             Padding(
               padding: const EdgeInsets.only(bottom: 10.0),
               child: Text('当前语言: ${languageMap[Get.locale.toString()]}'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Get.to(const Page2());
+                Get.toNamed('/page2', arguments: {'title': 'page2'});
+              },
+              child: const Text('跳转page2'),
             ),
           ],
         ),
